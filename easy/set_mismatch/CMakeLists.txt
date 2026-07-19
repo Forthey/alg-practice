@@ -1,4 +1,4 @@
-project(${PROJECT_NAME}__max_consecutive_ones)
+project(${PROJECT_NAME}__set_mismatch)
 
 file(GLOB_RECURSE SOURCE_FILES *.cpp)
 
