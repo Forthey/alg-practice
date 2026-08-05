@@ -7,6 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_compile_options(-Wall -Wextra -Wpedantic -Werror)
 
+include(install_googletest.cmake)
+
 include_directories(utility)
 
 add_subdirectory(easy)
