@@ -21,8 +21,8 @@ std::vector<T> shuffleImpl(const std::vector<T>& nums) {
 }
 
 int main() {
-    std::cout << shuffleImpl<int>({2,5,1,3,4,7}) << std::endl;
-    std::cout << shuffleImpl<int>({1,2,3,4,4,3,2,1}) << std::endl;
-    std::cout << shuffleImpl<int>({1,1,2,2}) << std::endl;
+    std::cout << shuffleImpl<int>({2, 5, 1, 3, 4, 7}) << std::endl;
+    std::cout << shuffleImpl<int>({1, 2, 3, 4, 4, 3, 2, 1}) << std::endl;
+    std::cout << shuffleImpl<int>({1, 1, 2, 2}) << std::endl;
     return 0;
 }

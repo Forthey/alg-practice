@@ -1,11 +1,11 @@
+#include <array>
 #include <iostream>
 #include <vector>
-#include <array>
 
 #include "StdOutput.h"
 #include "TestSuite.h"
 
-std::vector<int> mapNumbersToLessThanCount(const std::vector<int> &elements) {
+std::vector<int> mapNumbersToLessThanCount(const std::vector<int>& elements) {
     // Пара элемент + индекс из оригинального массива
     std::vector<std::pair<int, int>> sortedElementsPair;
     sortedElementsPair.reserve(elements.size());
@@ -41,7 +41,7 @@ std::vector<int> mapNumbersToLessThanCount(const std::vector<int> &elements) {
 struct Input {
     std::vector<int> nums;
 
-    friend std::ostream &operator<<(std::ostream &os, const Input &input) {
+    friend std::ostream& operator<<(std::ostream& os, const Input& input) {
         os << input.nums;
         return os;
     }
@@ -50,24 +50,31 @@ struct Input {
 struct Result {
     std::vector<int> value;
 
-    friend std::ostream &operator<<(std::ostream &os, const Result &expected) {
+    friend std::ostream& operator<<(std::ostream& os, const Result& expected) {
         os << expected.value;
         return os;
     }
 
-    friend bool operator==(const Result &lhs, const Result &rhs) = default;
+    friend bool operator==(const Result& lhs, const Result& rhs) = default;
 };
 
 int main() {
     TestSuite suite{
         std::array{
-            TestCase<Input, Result>{.input = {.nums = {8,1,2,2,3}}, .expected = {.value = {4, 0, 1, 1, 3}},},
-            TestCase<Input, Result>{.input = {.nums = {6, 5, 4, 8}}, .expected = {.value = {2, 1, 0, 3}},},
-            TestCase<Input, Result>{.input = {.nums = {7, 7, 7, 7}}, .expected = {.value = {0, 0, 0, 0}},},
+            TestCase<Input, Result>{
+                .input = {.nums = {8, 1, 2, 2, 3}},
+                .expected = {.value = {4, 0, 1, 1, 3}},
+            },
+            TestCase<Input, Result>{
+                .input = {.nums = {6, 5, 4, 8}},
+                .expected = {.value = {2, 1, 0, 3}},
+            },
+            TestCase<Input, Result>{
+                .input = {.nums = {7, 7, 7, 7}},
+                .expected = {.value = {0, 0, 0, 0}},
+            },
         },
-        [](const Input &input) {
-            return Result{.value = mapNumbersToLessThanCount(input.nums)};
-        },
+        [](const Input& input) { return Result{.value = mapNumbersToLessThanCount(input.nums)}; },
     };
 
     suite.run();

@@ -11,7 +11,7 @@ bool isNotBouncy(const std::uint64_t number) {
 
     // Тут важно, что итерация происходит от младших к старшим, то есть, new > old означает, что число decreasing
     for (auto slicedNumber = number, newDigit = slicedNumber % 10; slicedNumber > 0;
-        lastDigit = newDigit, slicedNumber /= 10, newDigit = slicedNumber % 10) {
+         lastDigit = newDigit, slicedNumber /= 10, newDigit = slicedNumber % 10) {
         // Первый проход
         if (!lastDigit) {
             continue;
@@ -66,9 +66,7 @@ std::uint64_t totalNotBouncyNumbersBad(unsigned int n) {
     return total;
 }
 
-std::uint64_t totalNotBouncyNumbers(unsigned int n) {
-    return n;
-}
+std::uint64_t totalNotBouncyNumbers(unsigned int n) { return n; }
 
 int main() {
     int input;

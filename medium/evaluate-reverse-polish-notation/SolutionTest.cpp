@@ -25,5 +25,5 @@ TEST_P(SolutionTest, buildArray_Parametrized_ReturnsExpectedValue) {
 }
 
 INSTANTIATE_TEST_SUITE_P(SolutionTest, SolutionTest, testing::ValuesIn(testCases));
-}
-}
+}  // namespace
+}  // namespace solution

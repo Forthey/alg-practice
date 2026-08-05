@@ -7,9 +7,9 @@ std::vector<std::string> Solution::buildArray(std::vector<int>& target, int n) {
     // Идея алгоритма - идем в цикле по стриму
     // Если element < currentStream - ошибка, такого быть не может.
     // Если element == currentStream и смещения нет - делаем push
-    // Если element == currentStream и смещение есть - Pop всех элементов до элемента, который указан как начало смещения, делаем push, обнуляем смещение
-    // Если element > currentStream, то делаем push и добавляем факт смещения, если он еще не задан
-    // 1, 2, 5 -> Push, Push, Push, Push, Pop, Pop, Push
+    // Если element == currentStream и смещение есть - Pop всех элементов до элемента, который указан как начало
+    // смещения, делаем push, обнуляем смещение Если element > currentStream, то делаем push и добавляем факт смещения,
+    // если он еще не задан 1, 2, 5 -> Push, Push, Push, Push, Pop, Pop, Push
 
     std::optional<int> offsetBeginNumber;
     auto element = target.begin();

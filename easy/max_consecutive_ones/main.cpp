@@ -1,7 +1,7 @@
+#include <array>
 #include <iostream>
 #include <ostream>
 #include <vector>
-#include <array>
 
 #include "StdOutput.h"
 #include "TestSuite.h"
@@ -48,12 +48,16 @@ struct Result {
 int main() {
     TestSuite suite{
         std::array{
-            TestCase<Input, Result>{.input = {.nums = {1, 1, 0, 1, 1, 1}}, .expected = {.value = 3},},
-            TestCase<Input, Result>{.input = {.nums = {1, 0, 1, 1, 0, 1}}, .expected = {.value = 2},},
+            TestCase<Input, Result>{
+                .input = {.nums = {1, 1, 0, 1, 1, 1}},
+                .expected = {.value = 3},
+            },
+            TestCase<Input, Result>{
+                .input = {.nums = {1, 0, 1, 1, 0, 1}},
+                .expected = {.value = 2},
+            },
         },
-        [](const Input &input) {
-            return Result{.value = findMaxConsecutive<int>(input.nums, 1)};
-        },
+        [](const Input& input) { return Result{.value = findMaxConsecutive<int>(input.nums, 1)}; },
     };
 
     suite.run();

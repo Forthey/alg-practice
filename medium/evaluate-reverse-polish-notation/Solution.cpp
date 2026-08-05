@@ -24,19 +24,23 @@ int Solution::evalRPN(std::vector<std::string>& tokens) {
                         const auto [first, second] = popTwoNumbers(numStack);
                         numStack.emplace(first + second);
                         break;
-                    } case '-': {
+                    }
+                    case '-': {
                         const auto [first, second] = popTwoNumbers(numStack);
                         numStack.emplace(first - second);
                         break;
-                    } case '*': {
+                    }
+                    case '*': {
                         const auto [first, second] = popTwoNumbers(numStack);
                         numStack.emplace(first * second);
                         break;
-                    } case '/': {
+                    }
+                    case '/': {
                         const auto [first, second] = popTwoNumbers(numStack);
                         numStack.emplace(first / second);
                         break;
-                    } default:
+                    }
+                    default:
                         numStack.emplace(token[0] - '0');
                         break;
                 }

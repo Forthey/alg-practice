@@ -15,6 +15,6 @@ std::vector<int> getConcatenationImpl(const std::vector<int>& nums) {
 }
 
 int main() {
-    std::cout << getConcatenationImpl({1,2,3,4,5}) << std::endl;
+    std::cout << getConcatenationImpl({1, 2, 3, 4, 5}) << std::endl;
     return 0;
 }
