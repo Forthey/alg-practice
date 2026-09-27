@@ -1,3 +1,6 @@
 .idea
 cmake-build-debug
 build
+tasks_manager/target/
+/tasks_manager.exe
+/tasks-manager

@@ -1,0 +1,57 @@
+# Entry files (main.cpp/tests.cpp) are selected by include_tests.
+# List only additional C++ sources, relative to the task directory.
+version: 1
+tasks:
+  leetcode:
+    easy:
+      concatenation_of_array:
+        include_tests: false
+      find-all-numbers-disappeared-in-an-array:
+        include_tests: true
+        source_files: [solution.cpp]
+      how-many-numbers-are-smaller-than-the-current-number:
+        include_tests: true
+        source_files: [solution.cpp]
+      max_consecutive_ones:
+        include_tests: true
+      set_mismatch:
+        include_tests: true
+        source_files: [solution.cpp]
+      shuffle_the_array:
+        include_tests: false
+    medium:
+      build-an-array-with-stack-operations:
+        include_tests: true
+        source_files: [Solution.cpp]
+      evaluate-reverse-polish-notation:
+        include_tests: true
+        source_files: [Solution.cpp]
+      exclusive-time-of-functions:
+        include_tests: true
+        source_files: [Solution.cpp]
+      not_bouncy_numbers:
+        include_tests: false
+  itmo:
+    alg_contests:
+      "01":
+        a1_square_rects:
+          include_tests: false
+        b1_redundant_whitespaces:
+          include_tests: false
+        c1_cacl_rpn:
+          include_tests: false
+        d2_simulate_queue:
+          include_tests: false
+        e2_schizo_professor:
+          include_tests: false
+    alg_homeworks:
+      "02":
+        hw2_task4:
+          include_tests: true
+          source_files: [solution.cpp]
+        hw2_task5:
+          include_tests: true
+          source_files: [solution.cpp]
+        hw2_task6:
+          include_tests: true
+          source_files: [solution.cpp]
