@@ -19,7 +19,7 @@ fn main() -> ExitCode {
     };
     if command == "--help" || command == "-h" {
         println!(
-            "Usage: tasks_manager <sync|check> [tasks.yaml]\n\n  sync   Create missing entry templates and synchronize tasks.cmake\n  check  Validate files and registry without making changes\n\nPaths are relative to the manifest directory. Removed targets keep their files."
+            "Usage: tasks_manager <sync|check> [tasks.yaml]\n\n  sync   Create missing entry/source/header templates and synchronize tasks.cmake\n  check  Validate files and registry without making changes\n\nPaths are relative to the manifest directory. Removed targets keep their files."
         );
         return ExitCode::SUCCESS;
     }

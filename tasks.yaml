@@ -44,6 +44,9 @@ tasks:
           include_tests: false
         e2_schizo_professor:
           include_tests: false
+      "02":
+        a1_binary_search:
+          include_tests: false
     alg_homeworks:
       "02":
         hw2_task4:

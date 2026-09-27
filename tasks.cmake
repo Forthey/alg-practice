@@ -10,6 +10,8 @@ add_task(NAME "itmo__alg_contests__01__d2_simulate_queue" DIRECTORY "itmo/alg_co
 
 add_task(NAME "itmo__alg_contests__01__e2_schizo_professor" DIRECTORY "itmo/alg_contests/01/e2_schizo_professor" INCLUDE_TESTS OFF SOURCES)
 
+add_task(NAME "itmo__alg_contests__02__a1_binary_search" DIRECTORY "itmo/alg_contests/02/a1_binary_search" INCLUDE_TESTS OFF SOURCES)
+
 add_task(NAME "itmo__alg_homeworks__02__hw2_task4" DIRECTORY "itmo/alg_homeworks/02/hw2_task4" INCLUDE_TESTS ON SOURCES "solution.cpp")
 
 add_task(NAME "itmo__alg_homeworks__02__hw2_task5" DIRECTORY "itmo/alg_homeworks/02/hw2_task5" INCLUDE_TESTS ON SOURCES "solution.cpp")

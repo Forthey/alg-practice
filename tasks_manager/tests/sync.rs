@@ -111,16 +111,156 @@ fn opposite_entry_is_not_overwritten_or_given_conflicting_template() {
 }
 
 #[test]
-fn missing_sources_are_not_created_and_invalid_tasks_are_excluded() {
+fn sync_creates_declared_sources_and_sibling_headers() {
     let tmp = tempdir().unwrap();
     let path = manifest(
         tmp.path(),
-        "  a: {include_tests: true, source_files: [solution.cpp]}",
+        "  a: {include_tests: true, source_files: [solution.cpp, helpers/binary_search.cpp]}",
     );
     let report = run(&path, Mode::Sync).unwrap();
-    assert_eq!(report.targets, 0);
-    assert!(report.errors.iter().any(|e| e.contains("solution.cpp")));
-    assert!(!tmp.path().join("a/solution.cpp").exists());
+    assert!(report.errors.is_empty(), "{:?}", report.errors);
+    assert_eq!(report.targets, 1);
+    assert_eq!(report.created.len(), 5);
+    for name in ["solution", "helpers/binary_search"] {
+        let source = tmp.path().join(format!("a/{name}.cpp"));
+        let header = tmp.path().join(format!("a/{name}.h"));
+        let basename = source.file_stem().unwrap().to_str().unwrap();
+        assert_eq!(
+            fs::read_to_string(&source).unwrap(),
+            format!("#include \"{basename}.h\"\n")
+        );
+        assert_eq!(fs::read_to_string(header).unwrap(), "#pragma once\n");
+    }
+    assert!(run(&path, Mode::Check).unwrap().errors.is_empty());
+    assert!(run(&path, Mode::Sync).unwrap().created.is_empty());
+}
+
+#[test]
+fn sync_creates_each_missing_half_without_overwriting_existing_code() {
+    for existing_source in [false, true] {
+        for existing_header in [false, true] {
+            let tmp = tempdir().unwrap();
+            fs::create_dir(tmp.path().join("a")).unwrap();
+            let source = tmp.path().join("a/solution.cpp");
+            let header = tmp.path().join("a/solution.h");
+            if existing_source {
+                fs::write(&source, "// existing implementation\n").unwrap();
+            }
+            if existing_header {
+                fs::write(&header, "// existing declarations\n").unwrap();
+            }
+            let path = manifest(
+                tmp.path(),
+                "  a: {include_tests: false, source_files: [solution.cpp]}",
+            );
+            let report = run(&path, Mode::Sync).unwrap();
+            assert!(report.errors.is_empty());
+            assert_eq!(
+                report.created.len(),
+                3 - usize::from(existing_source) - usize::from(existing_header)
+            );
+            assert_eq!(
+                fs::read_to_string(&source).unwrap(),
+                if existing_source {
+                    "// existing implementation\n"
+                } else {
+                    "#include \"solution.h\"\n"
+                }
+            );
+            assert_eq!(
+                fs::read_to_string(&header).unwrap(),
+                if existing_header {
+                    "// existing declarations\n"
+                } else {
+                    "#pragma once\n"
+                }
+            );
+        }
+    }
+}
+
+#[test]
+fn check_reports_missing_source_or_header_without_creating_either() {
+    for missing in ["solution.cpp", "solution.h"] {
+        let tmp = tempdir().unwrap();
+        fs::create_dir(tmp.path().join("a")).unwrap();
+        fs::write(tmp.path().join("a/main.cpp"), "int main() {}\n").unwrap();
+        let existing = if missing == "solution.cpp" {
+            "solution.h"
+        } else {
+            "solution.cpp"
+        };
+        fs::write(tmp.path().join("a").join(existing), "// user code\n").unwrap();
+        let path = manifest(
+            tmp.path(),
+            "  a: {include_tests: false, source_files: [solution.cpp]}",
+        );
+        let report = run(&path, Mode::Check).unwrap();
+        assert!(
+            report.errors.iter().any(|e| e.contains(missing)),
+            "{:?}",
+            report.errors
+        );
+        assert!(report.created.is_empty());
+        assert!(!tmp.path().join("a").join(missing).exists());
+        assert!(!tmp.path().join("tasks.cmake").exists());
+    }
+}
+
+#[test]
+fn invalid_header_path_excludes_task_before_creating_other_files() {
+    let tmp = tempdir().unwrap();
+    fs::create_dir_all(tmp.path().join("bad/solution.h")).unwrap();
+    let path = manifest(
+        tmp.path(),
+        "  bad: {include_tests: true, source_files: [solution.cpp]}\n  good: {include_tests: false}",
+    );
+    let report = run(&path, Mode::Sync).unwrap();
+    assert_eq!(report.targets, 1);
+    assert!(report.errors.iter().any(|e| e.contains("solution.h")));
+    assert!(!tmp.path().join("bad/tests.cpp").exists());
+    assert!(!tmp.path().join("bad/solution.cpp").exists());
+    assert!(tmp.path().join("good/main.cpp").is_file());
+}
+
+#[test]
+fn planned_file_directory_collisions_exclude_only_the_invalid_task() {
+    for sources in [
+        "part.cpp, part.h/extra.cpp",
+        "part.cpp, Part.h/extra.cpp",
+        "part.cpp, part.cpp/extra.cpp",
+    ] {
+        let tmp = tempdir().unwrap();
+        let path = manifest(
+            tmp.path(),
+            &format!(
+                "  a: {{include_tests: false, source_files: [{sources}]}}\n  z: {{include_tests: false}}"
+            ),
+        );
+        let report = run(&path, Mode::Sync).expect("planned path collision must be a task error");
+        assert_eq!(report.targets, 1);
+        assert_eq!(report.errors.len(), 1);
+        assert!(!tmp.path().join("a").exists());
+        assert!(tmp.path().join("z/main.cpp").is_file());
+        assert_eq!(report.added, ["z"]);
+    }
+}
+
+#[test]
+fn different_source_extensions_can_share_one_header() {
+    let tmp = tempdir().unwrap();
+    let path = manifest(
+        tmp.path(),
+        "  a: {include_tests: false, source_files: [part.cpp, part.cc]}",
+    );
+    let report = run(&path, Mode::Sync).unwrap();
+    assert!(report.errors.is_empty());
+    assert_eq!(report.created.len(), 4);
+    assert_eq!(
+        report.created.iter().filter(|p| *p == "a/part.h").count(),
+        1
+    );
+    assert!(run(&path, Mode::Check).unwrap().errors.is_empty());
 }
 
 #[test]

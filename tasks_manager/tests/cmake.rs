@@ -54,7 +54,7 @@ fn new_manifest_tasks_build_and_discover_parameterized_cases() {
     )
     .unwrap();
     let manifest = root.join("tasks.yaml");
-    fs::write(&manifest, "version: 1\ntasks:\n  examples:\n    plain: {include_tests: false}\n    tested: {include_tests: true}\n").unwrap();
+    fs::write(&manifest, "version: 1\ntasks:\n  examples:\n    plain: {include_tests: false, source_files: [helpers/start.cpp, helpers/support.cc]}\n    tested: {include_tests: true, source_files: [solution.cpp]}\n").unwrap();
     assert!(run(&manifest, Mode::Sync).unwrap().errors.is_empty());
     configure(root);
     checked(
@@ -80,15 +80,20 @@ fn new_manifest_tasks_build_and_discover_parameterized_cases() {
 
     // Populate a real solution and verify that source_files reaches the linker.
     fs::write(
+        root.join("examples/tested/solution.h"),
+        "#pragma once\nint twice(int);\n",
+    )
+    .unwrap();
+    fs::write(
         root.join("examples/tested/solution.cpp"),
-        "int twice(int x) { return 2 * x; }\n",
+        "#include \"solution.h\"\nint twice(int x) { return 2 * x; }\n",
     )
     .unwrap();
     fs::write(
         root.join("examples/tested/tests.cpp"),
         r#"
 #include <gtest/gtest.h>
-int twice(int);
+#include "solution.h"
 struct Case { int input; int expected; };
 const Case cases[] = {{2, 4}, {-3, -6}};
 using TwiceTest = testing::TestWithParam<Case>;
@@ -97,7 +102,7 @@ INSTANTIATE_TEST_SUITE_P(Examples, TwiceTest, testing::ValuesIn(cases));
 "#,
     )
     .unwrap();
-    fs::write(&manifest, "version: 1\ntasks:\n  examples:\n    plain: {include_tests: false}\n    tested: {include_tests: true, source_files: [solution.cpp]}\n").unwrap();
+    fs::write(&manifest, "version: 1\ntasks:\n  examples:\n    plain: {include_tests: false, source_files: [helpers/start.cpp, helpers/support.cc]}\n    tested: {include_tests: true, source_files: [solution.cpp, extra.cxx]}\n").unwrap();
     let report = run(&manifest, Mode::Sync).unwrap();
     assert!(report.errors.is_empty());
     assert_eq!(report.updated.len(), 1);

@@ -43,3 +43,21 @@ proofs for every historical algorithm.
 
 Work remains in the supplied checkout, with the user's staged changes preserved;
 no commits, merges or pushes were performed.
+
+## Source/header scaffolding extension
+
+`sync` now creates missing source/header pairs, including nested paths, preserving
+each existing file independently. `check` reports missing halves without writes.
+Validation covers all planned file paths before creating a task's templates.
+
+- Rust suite: 28 passed; clippy and formatting checks passed.
+- Optional CMake integration: generated `.cpp`, `.cc`, `.cxx` and sibling headers
+  compiled successfully; real parameterized cases passed after replacing templates.
+- Actual manifest: 19 targets. Created binary_search.cpp and binary_search.h for
+  the newly added task; repeated sync and check passed without further changes.
+- C++ build passed; CTest: 71/71 passed.
+- Root tasks_manager.exe rebuilt in release mode with the new behavior.
+- Independent review found a planned file/directory collision (part.cpp together
+  with part.h/extra.cpp). A regression test reproduced it; case-insensitive
+  preflight validation now excludes that task before any writes and continues
+  with valid tasks. Multiple source extensions may still share one header.

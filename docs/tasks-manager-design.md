@@ -8,8 +8,11 @@ Approved in conversation on 2026-09-27. The manifest is the source of truth.
 - Sources are relative C++ compilation units, excluding main.cpp/tests.cpp.
 - `sync` creates missing directories and entry templates, validates individual
   tasks, and generates `tasks.cmake` from valid tasks. Conflicting entry files
-  exclude a task. Missing declared sources exclude a task, but aren't created.
-- `check` writes nothing and reports invalid tasks and stale generated output.
+  exclude a task. Each declared C++ source gets a missing source template with
+  a sibling-header include and a missing `.h` with `#pragma once`; each existing
+  file is independently preserved. This extends the original creation contract.
+- `check` writes nothing and reports invalid tasks, missing source/header pairs,
+  and stale generated output.
 - Invalid manifest structure aborts before any writes. Task errors allow other
   tasks to sync but return a nonzero exit code. Filesystem write failures abort.
 - No deletion of solution files, no overwriting existing entry files. Removed

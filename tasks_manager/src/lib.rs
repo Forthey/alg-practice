@@ -1,4 +1,5 @@
 use std::{
+    collections::BTreeSet,
     fs,
     io::{ErrorKind, Write},
     path::Path,
@@ -87,20 +88,7 @@ fn prepare_task(
     let directory = root.join(&task.directory);
     let entry = directory.join(task.entry());
     let opposite = directory.join(task.opposite_entry());
-    for ancestor in directory.ancestors().take_while(|p| *p != root) {
-        if ancestor.exists() && !ancestor.is_dir() {
-            return Err(TaskError::Invalid(format!(
-                "{}: expected a directory",
-                ancestor.display()
-            )));
-        }
-    }
-    for path in std::iter::once(&directory).chain([&entry, &opposite]) {
-        ensure_within(root, path).map_err(TaskError::Invalid)?;
-    }
-    for source in &task.source_files {
-        ensure_within(root, &directory.join(source)).map_err(TaskError::Invalid)?;
-    }
+    ensure_within(root, &opposite).map_err(TaskError::Invalid)?;
     if opposite
         .try_exists()
         .map_err(|e| TaskError::Io(e.to_string()))?
@@ -112,38 +100,101 @@ fn prepare_task(
             task.entry()
         )));
     }
-    if !entry
-        .try_exists()
-        .map_err(|e| TaskError::Io(e.to_string()))?
-    {
-        if mode == Mode::Check {
-            return Err(TaskError::Invalid(format!("missing {}", task.entry())));
-        }
-        fs::create_dir_all(&directory).map_err(|e| TaskError::Io(e.to_string()))?;
-        let content = if task.include_tests {
-            include_str!("../templates/tests.cpp")
-        } else {
-            include_str!("../templates/main.cpp")
-        };
-        let mut file = fs::OpenOptions::new()
-            .write(true)
-            .create_new(true)
-            .open(&entry)
-            .map_err(|e| TaskError::Io(format!("cannot create {}: {e}", entry.display())))?;
-        file.write_all(content.as_bytes())
-            .map_err(|e| TaskError::Io(e.to_string()))?;
-        report
-            .created
-            .push(format!("{}/{}", task.directory, task.entry()));
+    let entry_template = if task.include_tests {
+        include_str!("../templates/tests.cpp")
+    } else {
+        include_str!("../templates/main.cpp")
+    };
+    let mut files = vec![(entry, entry_template.to_owned())];
+    for source in &task.source_files {
+        let source = directory.join(source);
+        let header = source.with_extension("h");
+        // Validated source paths have ASCII filenames; the header is a sibling.
+        let header_name = header.file_name().unwrap().to_str().unwrap();
+        let source_template = format!("#include \"{header_name}\"\n");
+        files.push((source, source_template));
+        files.push((header, "#pragma once\n".to_owned()));
     }
-    for path in std::iter::once(entry).chain(task.source_files.iter().map(|s| directory.join(s))) {
-        if !path.is_file() {
+
+    // Validate every output before writing any of this task's templates.
+    let planned_paths: BTreeSet<_> = files.iter().map(|(path, _)| path_key(path)).collect();
+    for (path, _) in &files {
+        for parent in path.ancestors().skip(1).take_while(|p| *p != root) {
+            if planned_paths.contains(&path_key(parent)) {
+                return Err(TaskError::Invalid(format!(
+                    "{} is required as both a file and a directory",
+                    parent.display()
+                )));
+            }
+        }
+        validate_template_path(root, path)?;
+    }
+    for (path, content) in &files {
+        create_missing_template(root, path, content, mode, report)?;
+    }
+    Ok(())
+}
+
+fn path_key(path: &Path) -> String {
+    path.to_string_lossy()
+        .replace('\\', "/")
+        .to_ascii_lowercase()
+}
+
+fn validate_template_path(root: &Path, path: &Path) -> Result<(), TaskError> {
+    ensure_within(root, path).map_err(TaskError::Invalid)?;
+    for ancestor in path
+        .parent()
+        .unwrap()
+        .ancestors()
+        .take_while(|p| *p != root)
+    {
+        if ancestor.exists() && !ancestor.is_dir() {
             return Err(TaskError::Invalid(format!(
-                "missing source or not a regular file: {}",
-                path.display()
+                "{}: expected a directory",
+                ancestor.display()
             )));
         }
     }
+    if path.exists() && !path.is_file() {
+        return Err(TaskError::Invalid(format!(
+            "{}: expected a regular file",
+            path.display()
+        )));
+    }
+    Ok(())
+}
+
+fn create_missing_template(
+    root: &Path,
+    path: &Path,
+    content: &str,
+    mode: Mode,
+    report: &mut Report,
+) -> Result<(), TaskError> {
+    if path
+        .try_exists()
+        .map_err(|e| TaskError::Io(e.to_string()))?
+    {
+        return Ok(());
+    }
+    let relative = path
+        .strip_prefix(root)
+        .unwrap()
+        .to_string_lossy()
+        .replace('\\', "/");
+    if mode == Mode::Check {
+        return Err(TaskError::Invalid(format!("missing {relative}")));
+    }
+    fs::create_dir_all(path.parent().unwrap()).map_err(|e| TaskError::Io(e.to_string()))?;
+    let mut file = fs::OpenOptions::new()
+        .write(true)
+        .create_new(true)
+        .open(path)
+        .map_err(|e| TaskError::Io(format!("cannot create {}: {e}", path.display())))?;
+    file.write_all(content.as_bytes())
+        .map_err(|e| TaskError::Io(e.to_string()))?;
+    report.created.push(relative);
     Ok(())
 }
 
