@@ -1,0 +1,1 @@
+add_project_with_subdirs(02)
