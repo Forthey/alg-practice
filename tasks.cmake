@@ -12,6 +12,16 @@ add_task(NAME "itmo__alg_contests__01__e2_schizo_professor" DIRECTORY "itmo/alg_
 
 add_task(NAME "itmo__alg_contests__02__a1_binary_search" DIRECTORY "itmo/alg_contests/02/a1_binary_search" INCLUDE_TESTS OFF SOURCES)
 
+add_task(NAME "itmo__alg_contests__02__b1_binary_search" DIRECTORY "itmo/alg_contests/02/b1_binary_search" INCLUDE_TESTS OFF SOURCES)
+
+add_task(NAME "itmo__alg_contests__02__c1_fast_array_search" DIRECTORY "itmo/alg_contests/02/c1_fast_array_search" INCLUDE_TESTS OFF SOURCES)
+
+add_task(NAME "itmo__alg_contests__02__d2_cities_and_trams" DIRECTORY "itmo/alg_contests/02/d2_cities_and_trams" INCLUDE_TESTS OFF SOURCES)
+
+add_task(NAME "itmo__alg_contests__02__e2_ropes" DIRECTORY "itmo/alg_contests/02/e2_ropes" INCLUDE_TESTS OFF SOURCES)
+
+add_task(NAME "itmo__alg_contests__02__f2_memory_management" DIRECTORY "itmo/alg_contests/02/f2_memory_management" INCLUDE_TESTS OFF SOURCES)
+
 add_task(NAME "itmo__alg_homeworks__02__hw2_task4" DIRECTORY "itmo/alg_homeworks/02/hw2_task4" INCLUDE_TESTS ON SOURCES "solution.cpp")
 
 add_task(NAME "itmo__alg_homeworks__02__hw2_task5" DIRECTORY "itmo/alg_homeworks/02/hw2_task5" INCLUDE_TESTS ON SOURCES "solution.cpp")

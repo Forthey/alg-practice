@@ -47,6 +47,16 @@ tasks:
       "02":
         a1_binary_search:
           include_tests: false
+        b1_binary_search:
+          include_tests: false
+        c1_fast_array_search:
+          include_tests: false
+        d2_cities_and_trams:
+          include_tests: false
+        e2_ropes:
+          include_tests: false
+        f2_memory_management:
+          include_tests: false
     alg_homeworks:
       "02":
         hw2_task4:
