@@ -28,6 +28,8 @@ add_task(NAME "itmo__alg_homeworks__02__hw2_task5" DIRECTORY "itmo/alg_homeworks
 
 add_task(NAME "itmo__alg_homeworks__02__hw2_task6" DIRECTORY "itmo/alg_homeworks/02/hw2_task6" INCLUDE_TESTS ON SOURCES "solution.cpp")
 
+add_task(NAME "itmo__alg_homeworks__03__task1" DIRECTORY "itmo/alg_homeworks/03/task1" INCLUDE_TESTS ON SOURCES "solution.cpp")
+
 add_task(NAME "leetcode__easy__concatenation_of_array" DIRECTORY "leetcode/easy/concatenation_of_array" INCLUDE_TESTS OFF SOURCES)
 
 add_task(NAME "leetcode__easy__find-all-numbers-disappeared-in-an-array" DIRECTORY "leetcode/easy/find-all-numbers-disappeared-in-an-array" INCLUDE_TESTS ON SOURCES "solution.cpp")

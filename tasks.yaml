@@ -68,3 +68,7 @@ tasks:
         hw2_task6:
           include_tests: true
           source_files: [solution.cpp]
+      "03":
+        task1:
+          include_tests: true
+          source_files: [solution.cpp]
