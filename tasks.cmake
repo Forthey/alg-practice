@@ -22,6 +22,16 @@ add_task(NAME "itmo__alg_contests__02__e2_ropes" DIRECTORY "itmo/alg_contests/02
 
 add_task(NAME "itmo__alg_contests__02__f2_memory_management" DIRECTORY "itmo/alg_contests/02/f2_memory_management" INCLUDE_TESTS OFF SOURCES)
 
+add_task(NAME "itmo__alg_contests__03__a1_min_max" DIRECTORY "itmo/alg_contests/03/a1_min_max" INCLUDE_TESTS OFF SOURCES)
+
+add_task(NAME "itmo__alg_contests__03__b1_insertion_sort" DIRECTORY "itmo/alg_contests/03/b1_insertion_sort" INCLUDE_TESTS OFF SOURCES)
+
+add_task(NAME "itmo__alg_contests__03__c2_fix_heap" DIRECTORY "itmo/alg_contests/03/c2_fix_heap" INCLUDE_TESTS OFF SOURCES)
+
+add_task(NAME "itmo__alg_contests__03__d2_bagels" DIRECTORY "itmo/alg_contests/03/d2_bagels" INCLUDE_TESTS OFF SOURCES)
+
+add_task(NAME "itmo__alg_contests__03__e2_lift" DIRECTORY "itmo/alg_contests/03/e2_lift" INCLUDE_TESTS OFF SOURCES)
+
 add_task(NAME "itmo__alg_homeworks__02__hw2_task4" DIRECTORY "itmo/alg_homeworks/02/hw2_task4" INCLUDE_TESTS ON SOURCES "solution.cpp")
 
 add_task(NAME "itmo__alg_homeworks__02__hw2_task5" DIRECTORY "itmo/alg_homeworks/02/hw2_task5" INCLUDE_TESTS ON SOURCES "solution.cpp")
