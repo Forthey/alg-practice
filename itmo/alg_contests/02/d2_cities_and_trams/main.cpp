@@ -4,13 +4,13 @@
 #include <iostream>
 #include <vector>
 
-using Value = std::uint64_t;
-using CityData = std::pair<Value, std::size_t>;
+using Coord = std::uint64_t;
+using CityData = std::pair<Coord, std::size_t>;
 
 struct FindRequest {
     std::size_t minNumber{};
     std::size_t maxNumber{};
-    Value targetPassengers{};
+    Coord targetPassengers{};
 };
 
 bool executeRequest(const std::vector<CityData>& cities, const FindRequest& request) {

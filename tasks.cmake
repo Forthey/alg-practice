@@ -32,6 +32,24 @@ add_task(NAME "itmo__alg_contests__03__d2_bagels" DIRECTORY "itmo/alg_contests/0
 
 add_task(NAME "itmo__alg_contests__03__e2_lift" DIRECTORY "itmo/alg_contests/03/e2_lift" INCLUDE_TESTS OFF SOURCES)
 
+add_task(NAME "itmo__alg_contests__04__a1_pair_sort" DIRECTORY "itmo/alg_contests/04/a1_pair_sort" INCLUDE_TESTS OFF SOURCES)
+
+add_task(NAME "itmo__alg_contests__04__b1_quick_sort_depth" DIRECTORY "itmo/alg_contests/04/b1_quick_sort_depth" INCLUDE_TESTS OFF SOURCES)
+
+add_task(NAME "itmo__alg_contests__04__c2_single_dim_postman" DIRECTORY "itmo/alg_contests/04/c2_single_dim_postman" INCLUDE_TESTS OFF SOURCES)
+
+add_task(NAME "itmo__alg_contests__04__d2_k_best_strikes_back" DIRECTORY "itmo/alg_contests/04/d2_k_best_strikes_back" INCLUDE_TESTS OFF SOURCES)
+
+add_task(NAME "itmo__alg_contests__05__a1_resort_counting" DIRECTORY "itmo/alg_contests/05/a1_resort_counting" INCLUDE_TESTS OFF SOURCES)
+
+add_task(NAME "itmo__alg_contests__05__b1_aztecs_gold" DIRECTORY "itmo/alg_contests/05/b1_aztecs_gold" INCLUDE_TESTS OFF SOURCES)
+
+add_task(NAME "itmo__alg_contests__05__c2_sum_splitting" DIRECTORY "itmo/alg_contests/05/c2_sum_splitting" INCLUDE_TESTS OFF SOURCES)
+
+add_task(NAME "itmo__alg_contests__05__d2_taxi" DIRECTORY "itmo/alg_contests/05/d2_taxi" INCLUDE_TESTS OFF SOURCES)
+
+add_task(NAME "itmo__alg_contests__05__e2_number" DIRECTORY "itmo/alg_contests/05/e2_number" INCLUDE_TESTS OFF SOURCES)
+
 add_task(NAME "itmo__alg_homeworks__02__hw2_task4" DIRECTORY "itmo/alg_homeworks/02/hw2_task4" INCLUDE_TESTS ON SOURCES "solution.cpp")
 
 add_task(NAME "itmo__alg_homeworks__02__hw2_task5" DIRECTORY "itmo/alg_homeworks/02/hw2_task5" INCLUDE_TESTS ON SOURCES "solution.cpp")

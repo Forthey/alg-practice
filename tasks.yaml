@@ -68,6 +68,26 @@ tasks:
           include_tests: false
         e2_lift:
           include_tests: false
+      "04":
+        a1_pair_sort:
+          include_tests: false
+        b1_quick_sort_depth:
+          include_tests: false
+        c2_single_dim_postman:
+          include_tests: false
+        d2_k_best_strikes_back:
+          include_tests: false
+      "05":
+        a1_resort_counting:
+          include_tests: false
+        b1_aztecs_gold:
+          include_tests: false
+        c2_sum_splitting:
+          include_tests: false
+        d2_taxi:
+          include_tests: false
+        e2_number:
+          include_tests: false
     alg_homeworks:
       "02":
         hw2_task4:
